@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --color-bg: #090a0d;
@@ -53,8 +53,8 @@
   --color-icon-idle-3: #6d727c;
   --color-icon-tools: #777c86;
 
-  --font-sans: "DM Sans", system-ui, sans-serif;
-  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
 }
 
 /* Tiny reset for predictable layout. Tailwind preflight already covers most of this,

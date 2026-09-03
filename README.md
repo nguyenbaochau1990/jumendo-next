@@ -10,6 +10,7 @@ Jamendo documents `709fa152` as a client ID for testing the read API. For your o
 - Developer portal: https://devportal.jamendo.com/
 
 ## Run
+
 ```bash
 npm install
 cp .env.example .env.local
@@ -19,6 +20,7 @@ npm run dev
 Open http://localhost:3000.
 
 ## Architecture
+
 - `/api/jamendo/search` keeps the client ID server-side and searches Jamendo.
 - `/api/jamendo/stream/[id]` requests Jamendo's `action=stream` endpoint and redirects to the playable audio URL.
 - React manages queue, playback, seek, volume, shuffle, repeat and likes.

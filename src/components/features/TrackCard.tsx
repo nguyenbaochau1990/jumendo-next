@@ -57,3 +57,4 @@ export default function TrackCard({ track }: { track: JamendoTrack }) {
     </div>
   );
 }
+

@@ -107,7 +107,9 @@ function TableRow({ track, index }: { track: JamendoTrack; index: number }) {
       >
         <Heart size={17} fill={isLiked ? 'currentColor' : 'none'} />
       </button>
-      <span className="text-xs text-text-dim">{formatTime(track.duration)}</span>
+      <span className="text-xs text-text-dim">
+        {formatTime(track.duration)}
+      </span>
       <button
         aria-label="More options"
         className="text-icon-idle-3 transition-colors hover:text-text-faded-2"

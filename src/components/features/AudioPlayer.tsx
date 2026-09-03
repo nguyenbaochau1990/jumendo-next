@@ -179,11 +179,7 @@ function PlayerControls() {
             <Play size={19} fill="currentColor" />
           )}
         </button>
-        <button
-          onClick={next}
-          aria-label="Next"
-          className="text-icon-idle-2"
-        >
+        <button onClick={next} aria-label="Next" className="text-icon-idle-2">
           <SkipForward size={19} fill="currentColor" />
         </button>
         <button

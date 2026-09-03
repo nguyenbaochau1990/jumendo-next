@@ -52,7 +52,7 @@ export default function MusicApp() {
       </header>
 
       {/* Content */}
-      <section className="mx-auto max-w-295 px-8.5 py-7.5 max-md:px-4 max-md:px-4 max-md:py-5">
+      <section className="mx-auto max-w-295 px-8.5 py-7.5 max-md:px-4 max-md:py-5">
         {/* Error Banner */}
         {error && (
           <div className="mt-4.5 mb-0 rounded-lg border border-danger-bd bg-danger-bg px-3.5 py-2.5 text-xs text-danger-fg">

@@ -1,11 +1,13 @@
 # Next.js Music Jamendo Project - Architecture & Guidelines
 
 ## Project Overview
+
 This is a Next.js 16 + React 19 application that integrates with the Jamendo API to provide music streaming functionality. The app allows users to search, play, and favorite tracks from the Jamendo catalog.
 
 ## Architecture Review & Recommendations
 
 ### Current Architecture Status ✅
+
 The application has been successfully refactored to follow a production-ready layered architecture with proper separation of concerns:
 
 ```
@@ -32,6 +34,7 @@ src/
 ```
 
 ### Architecture Improvements Made
+
 1. **Separation of Concerns Achieved**:
    - ✅ Presentation Layer: Components responsible only for rendering UI
    - ✅ Business Logic Layer: Custom hooks handle data and logic
@@ -61,7 +64,9 @@ src/
    - Strongly typed props and state
 
 ### Code Conventions Followed
+
 All code adheres to the guidelines in this document:
+
 - TypeScript Guidelines: Interface naming, function types, nullable types, avoiding `any`
 - React Best Practices: Component size under 100 lines, early returns, prop destructuring
 - Styling Guidelines: CSS classes from globals.css, responsive design, mobile-first approach
@@ -70,14 +75,18 @@ All code adheres to the guidelines in this document:
 - Performance Considerations: Efficient rendering, proper key usage
 
 ## Development Status
+
 The application is now production-ready with:
+
 - Clean, maintainable architecture
 - Separation of concerns properly implemented
 - All original functionality preserved
 - Ready for future enhancements
 
 ## Future Enhancements (Unchanged from Original)
+
 ### Short-term
+
 1. Add proper error boundaries and loading states
 2. Implement audio persistence (remember position on refresh)
 3. Add keyboard shortcuts for player controls
@@ -85,6 +94,7 @@ The application is now production-ready with:
 5. Add track sharing functionality
 
 ### Medium-term
+
 1. Implement user authentication (Jamendo OAuth)
 2. Add playlist creation and management
 3. Add audio visualization/waveform display
@@ -92,6 +102,7 @@ The application is now production-ready with:
 5. Add social features (sharing, following artists)
 
 ### Long-term
+
 1. Consider state management migration to Redux Toolkit or Zustand
 2. Add audio equalizer and sound effects
 3. Implement recommendation engine
@@ -99,21 +110,24 @@ The application is now production-ready with:
 5. Create mobile app version using React Native
 
 ## Deployment (Unchanged)
+
 1. Build: `npm run build`
 2. Start: `npm start`
 3. Preview: `npm run preview`
 4. Environment Variables: Configure in hosting platform (Vercel, Netlify, etc.)
 
 ## Troubleshooting (Unchanged)
+
 - **API Rate Limits**: Implement retry with exponential backoff
 - **Audio Playback Issues**: Check browser autoplay policies
 - **Styling Conflicts**: Use CSS modules or scoped styles
 - **Bundle Size**: Use webpack bundle analyzer to identify large dependencies
 
 ---
-*Last updated: 2026-09-01*
-*This document reflects the current production-ready architecture*
-*Updated to reflect successful refactor to layered architecture*
+
+_Last updated: 2026-09-01_
+_This document reflects the current production-ready architecture_
+_Updated to reflect successful refactor to layered architecture_
 
 <!-- BEGIN:nextjs-agent-rules -->
 

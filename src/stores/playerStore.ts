@@ -100,7 +100,9 @@ export const usePlayerStore = create<PlayerState>()(
           const a = audio();
           if (!get().current) return;
           if (a.paused) {
-            a.play().catch((err) => console.error('Playback was blocked:', err));
+            a.play().catch((err) =>
+              console.error('Playback was blocked:', err)
+            );
           } else {
             a.pause();
           }
@@ -142,9 +144,7 @@ export const usePlayerStore = create<PlayerState>()(
       next: () => {
         const { tracks, current, shuffle } = get();
         if (!tracks.length) return;
-        const i = current
-          ? tracks.findIndex((t) => t.id === current.id)
-          : -1;
+        const i = current ? tracks.findIndex((t) => t.id === current.id) : -1;
         const ni = shuffle
           ? Math.floor(Math.random() * tracks.length)
           : (i + 1) % tracks.length;
@@ -154,9 +154,7 @@ export const usePlayerStore = create<PlayerState>()(
       prev: () => {
         const { tracks, current, shuffle } = get();
         if (!tracks.length) return;
-        const i = current
-          ? tracks.findIndex((t) => t.id === current.id)
-          : 0;
+        const i = current ? tracks.findIndex((t) => t.id === current.id) : 0;
         const pi = shuffle
           ? Math.floor(Math.random() * tracks.length)
           : (i - 1 + tracks.length) % tracks.length;
