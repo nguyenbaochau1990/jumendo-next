@@ -117,6 +117,21 @@ export function useAudioPlayer() {
     }
   }, []);
 
+  // Seek the underlying audio element, then mirror the new position into state.
+  // Without this, the slider only moves the display — the next `timeupdate`
+  // snaps playback back to its real position.
+  const seek = useCallback((value: number) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const clamped = Number.isFinite(value) ? Math.max(0, value) : 0;
+    if (Number.isFinite(audio.duration) && audio.duration > 0) {
+      audio.currentTime = Math.min(clamped, audio.duration);
+    } else {
+      audio.currentTime = clamped;
+    }
+    setProgress(audio.currentTime);
+  }, []);
+
   return {
     audioRef,
     current,
@@ -135,7 +150,7 @@ export function useAudioPlayer() {
     setRepeat,
     playTrack,
     togglePlay,
-    setProgressBound: setProgress,
+    setProgressBound: seek,
     setVolumeBound: setVolume,
   };
 }
