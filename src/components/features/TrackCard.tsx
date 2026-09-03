@@ -1,22 +1,18 @@
 import { JamendoTrack } from '@/lib/types/jamendo';
 import { artworkUrl } from '@/lib/utils/artworkUrl';
 import { formatTime } from '@/lib/utils/formatTime';
+import { usePlayerStore } from '@/stores/playerStore';
+import { useLikedStore } from '@/stores/likedStore';
 import { Play, Heart, MoreHorizontal } from 'lucide-react';
 
-interface TrackCardProps {
-  track: JamendoTrack;
-  onPlay: (track: JamendoTrack) => void;
-  onLike: (id: string) => void;
-  liked: string[];
-}
-
-export default function TrackCard({
-  track,
-  onPlay,
-  onLike,
-  liked,
-}: TrackCardProps) {
-  const isLiked = liked.includes(track.id);
+export default function TrackCard({ track }: { track: JamendoTrack }) {
+  // Subscribe to the smallest slice we need. The card doesn't care about
+  // progress, volume, or any other player state.
+  const isLiked = useLikedStore(
+    (s) => s.hasHydrated && s.liked.includes(track.id)
+  );
+  const playTrack = usePlayerStore((s) => s.playTrack);
+  const toggleLike = usePlayerStore((s) => s.toggleLike);
 
   return (
     <div className="group min-w-0">
@@ -27,7 +23,7 @@ export default function TrackCard({
           className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
         />
         <button
-          onClick={() => onPlay(track)}
+          onClick={() => playTrack(track)}
           aria-label={`Play ${track.name}`}
           className="absolute bottom-2 right-2 grid h-9.5 w-9.5 translate-y-1 place-items-center rounded-full bg-accent text-accent-fg opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
         >
@@ -42,7 +38,7 @@ export default function TrackCard({
       </div>
       <div className="mt-2 flex items-center justify-between">
         <button
-          onClick={() => onLike(track.id)}
+          onClick={() => toggleLike(track.id)}
           aria-label="Toggle like"
           className={`p-1 transition-colors hover:text-accent ${isLiked ? 'text-accent' : 'text-icon-idle'}`}
         >

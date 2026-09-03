@@ -2,83 +2,31 @@
 
 import { useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
-import { useSearch } from '@/hooks/useSearch';
-import { useAudioPlayer } from '@/hooks/useAudioPlayer';
-import { useLikedTracks } from '@/hooks/useLikedTracks';
+import { useSearchStore } from '@/stores/searchStore';
+import { usePlayerStore } from '@/stores/playerStore';
 import MainLayout from './layout/MainLayout';
 import SearchBar from './features/SearchBar';
 import HeroSection from './features/HeroSection';
 import TrackList from './features/TrackList';
 import AudioPlayer from './features/AudioPlayer';
-import type { JamendoTrack } from '@/lib/types/jamendo';
 
 export default function MusicApp() {
-  // Hooks
-  const {
-    query,
-    setQuery,
-    results: tracks,
-    loading,
-    error,
-    search,
-  } = useSearch();
-  const {
-    audioRef,
-    current,
-    playing,
-    progress,
-    duration,
-    volume,
-    shuffle,
-    repeat,
-    playTrack,
-    togglePlay,
-    setProgressBound,
-    setVolumeBound,
-    setShuffle,
-    setRepeat,
-  } = useAudioPlayer();
-  const { liked, toggleLike, isMounted: likedMounted } = useLikedTracks();
+  const query = useSearchStore((s) => s.query);
+  const setQuery = useSearchStore((s) => s.setQuery);
+  const tracks = useSearchStore((s) => s.results);
+  const loading = useSearchStore((s) => s.loading);
+  const error = useSearchStore((s) => s.error);
 
-  // Initial load: search for empty query to get featured tracks
+  // Keep the player store's track list in sync with the current search
+  // results. The store's next()/prev() read from this.
   useEffect(() => {
-    search('');
-  }, [search]);
+    usePlayerStore.getState().setTracks(tracks);
+  }, [tracks]);
 
-  // Play first track helper
-  const playFirstTrack = () => {
-    if (tracks[0]) {
-      playTrack(tracks[0]);
-    }
-  };
-
-  // Refresh catalog (re-search current query)
-  const refreshCatalog = () => {
-    search(query);
-  };
-
-  // Next and previous track functions
-  const handleNext = () => {
-    if (!tracks.length) return;
-    const index = current
-      ? tracks.findIndex((t: JamendoTrack) => t.id === current.id)
-      : -1;
-    const nextIndex = shuffle
-      ? Math.floor(Math.random() * tracks.length)
-      : (index + 1) % tracks.length;
-    playTrack(tracks[nextIndex]);
-  };
-
-  const handlePrev = () => {
-    if (!tracks.length) return;
-    const index = current
-      ? tracks.findIndex((t: JamendoTrack) => t.id === current.id)
-      : 0;
-    const prevIndex = shuffle
-      ? Math.floor(Math.random() * tracks.length)
-      : (index - 1 + tracks.length) % tracks.length;
-    playTrack(tracks[prevIndex]);
-  };
+  // Initial load: search for empty query to get featured tracks.
+  useEffect(() => {
+    useSearchStore.getState().search('');
+  }, []);
 
   return (
     <MainLayout>
@@ -104,7 +52,7 @@ export default function MusicApp() {
       </header>
 
       {/* Content */}
-      <section className="mx-auto max-w-295 px-8.5 py-7.5 max-md:px-4 max-md:py-5">
+      <section className="mx-auto max-w-295 px-8.5 py-7.5 max-md:px-4 max-md:px-4 max-md:py-5">
         {/* Error Banner */}
         {error && (
           <div className="mt-4.5 mb-0 rounded-lg border border-danger-bd bg-danger-bg px-3.5 py-2.5 text-xs text-danger-fg">
@@ -119,53 +67,12 @@ export default function MusicApp() {
           </div>
         )}
 
-        {/* Hero Section */}
-        <HeroSection
-          visibleTracks={tracks.slice(0, 12)}
-          query={query}
-          onPlayFirst={playFirstTrack}
-          onRefresh={refreshCatalog}
-        />
+        <HeroSection visibleTracks={tracks.slice(0, 12)} />
 
-        {/* Track List */}
-        <TrackList
-          tracks={tracks}
-          current={current}
-          playing={playing}
-          liked={liked}
-          likedMounted={likedMounted}
-          onPlayTrack={playTrack}
-          onToggleLike={toggleLike}
-          onPlay={togglePlay}
-          onPause={togglePlay}
-          onPrev={handlePrev}
-          onNext={handleNext}
-          shuffle={shuffle}
-          repeat={repeat}
-        />
+        <TrackList tracks={tracks} />
       </section>
 
-      {/* Audio Player */}
-      <AudioPlayer
-        audioRef={audioRef}
-        current={current}
-        playing={playing}
-        progress={progress}
-        duration={duration}
-        volume={volume}
-        shuffle={shuffle}
-        repeat={repeat}
-        onTogglePlay={togglePlay}
-        onPrev={handlePrev}
-        onNext={handleNext}
-        onSetShuffle={setShuffle}
-        onSetRepeat={setRepeat}
-        onSetProgress={setProgressBound}
-        onSetVolume={setVolumeBound}
-        onToggleLike={toggleLike}
-        liked={liked}
-        likedMounted={likedMounted}
-      />
+      <AudioPlayer />
     </MainLayout>
   );
 }

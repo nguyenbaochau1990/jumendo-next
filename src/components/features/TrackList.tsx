@@ -1,43 +1,15 @@
 import { JamendoTrack } from '@/lib/types/jamendo';
 import { artworkUrl } from '@/lib/utils/artworkUrl';
 import { formatTime } from '@/lib/utils/formatTime';
+import { usePlayerStore } from '@/stores/playerStore';
+import { useLikedStore } from '@/stores/likedStore';
 import TrackCard from './TrackCard';
 import { Heart, MoreHorizontal } from 'lucide-react';
-
-interface TrackListProps {
-  tracks: JamendoTrack[];
-  current: JamendoTrack | null;
-  playing: boolean;
-  liked: string[];
-  likedMounted: boolean;
-  onPlayTrack: (track: JamendoTrack) => void;
-  onToggleLike: (id: string) => void;
-  onPlay: () => void;
-  onPause: () => void;
-  onPrev: () => void;
-  onNext: () => void;
-  shuffle: boolean;
-  repeat: boolean;
-}
 
 const CARD_LIMIT = 12;
 const TABLE_LIMIT = 8;
 
-export default function TrackList({
-  tracks,
-  current,
-  playing,
-  liked,
-  likedMounted,
-  onPlayTrack,
-  onToggleLike,
-  onPlay,
-  onPause,
-  onPrev,
-  onNext,
-  shuffle,
-  repeat,
-}: TrackListProps) {
+export default function TrackList({ tracks }: { tracks: JamendoTrack[] }) {
   const visibleCards = tracks.slice(0, CARD_LIMIT);
   const visibleTable = tracks.slice(0, TABLE_LIMIT);
 
@@ -61,13 +33,7 @@ export default function TrackList({
           {/* Card Grid */}
           <div className="mb-8 grid grid-cols-6 gap-4.5 max-md:grid-cols-2 max-[1050px]:grid-cols-4">
             {visibleCards.map((track) => (
-              <TrackCard
-                key={track.id}
-                track={track}
-                onPlay={onPlayTrack}
-                onLike={onToggleLike}
-                liked={liked}
-              />
+              <TrackCard key={track.id} track={track} />
             ))}
           </div>
 
@@ -85,59 +51,69 @@ export default function TrackList({
             </div>
             <div>
               {visibleTable.map((track, i) => (
-                <div
-                  key={track.id}
-                  onDoubleClick={() => onPlayTrack(track)}
-                  className={`grid min-h-20 cursor-pointer grid-cols-[40px_60px_1.4fr_1fr_38px_60px_35px] items-center gap-3.5 border-b border-divider px-1.5 py-2.5 text-text-faded-2 hover:bg-surface-2 max-md:grid-cols-[25px_42px_1fr_38px_45px] ${track.id === current?.id ? 'bg-surface-2' : ''}`}
-                >
-                  <div className="text-center text-xs text-text-faint">
-                    {track.id === current?.id && playing ? (
-                      <span className="tracking-[-2px] text-accent">▮▮▮</span>
-                    ) : (
-                      i + 1
-                    )}
-                  </div>
-                  <img
-                    src={artworkUrl(track, 100)}
-                    alt={track.name}
-                    className="h-15 w-15 rounded-lg object-cover"
-                  />
-                  <div className="flex min-w-0 flex-col">
-                    <b className="truncate text-[15px] font-semibold text-text">
-                      {track.name}
-                    </b>
-                    <span className="mt-1 truncate text-xs text-text-dim">
-                      {track.artist_name}
-                    </span>
-                  </div>
-                  <span className="truncate text-xs text-text-dim max-md:hidden">
-                    {track.album_name || 'Single'}
-                  </span>
-                  <button
-                    onClick={() => onToggleLike(track.id)}
-                    aria-label="Toggle like"
-                    className={`p-1 transition-colors hover:text-accent ${liked.includes(track.id) ? 'text-accent' : 'text-icon-idle'}`}
-                  >
-                    <Heart
-                      size={17}
-                      fill={liked.includes(track.id) ? 'currentColor' : 'none'}
-                    />
-                  </button>
-                  <span className="text-xs text-text-dim">
-                    {formatTime(track.duration)}
-                  </span>
-                  <button
-                    aria-label="More options"
-                    className="text-icon-idle-3 transition-colors hover:text-text-faded-2"
-                  >
-                    <MoreHorizontal size={18} />
-                  </button>
-                </div>
+                <TableRow key={track.id} track={track} index={i} />
               ))}
             </div>
           </div>
         </>
       )}
     </>
+  );
+}
+
+function TableRow({ track, index }: { track: JamendoTrack; index: number }) {
+  // Each row subscribes only to its own relevant slices so the table doesn't
+  // re-render every time `progress` ticks.
+  const isCurrent = usePlayerStore((s) => s.current?.id === track.id);
+  const playing = usePlayerStore((s) => s.playing);
+  const playTrack = usePlayerStore((s) => s.playTrack);
+  const toggleLike = usePlayerStore((s) => s.toggleLike);
+  const isLiked = useLikedStore(
+    (s) => s.hasHydrated && s.liked.includes(track.id)
+  );
+
+  return (
+    <div
+      onDoubleClick={() => playTrack(track)}
+      className={`grid min-h-20 cursor-pointer grid-cols-[40px_60px_1.4fr_1fr_38px_60px_35px] items-center gap-3.5 border-b border-divider px-1.5 py-2.5 text-text-faded-2 hover:bg-surface-2 max-md:grid-cols-[25px_42px_1fr_38px_45px] ${isCurrent ? 'bg-surface-2' : ''}`}
+    >
+      <div className="text-center text-xs text-text-faint">
+        {isCurrent && playing ? (
+          <span className="tracking-[-2px] text-accent">▮▮▮</span>
+        ) : (
+          index + 1
+        )}
+      </div>
+      <img
+        src={artworkUrl(track, 100)}
+        alt={track.name}
+        className="h-15 w-15 rounded-lg object-cover"
+      />
+      <div className="flex min-w-0 flex-col">
+        <b className="truncate text-[15px] font-semibold text-text">
+          {track.name}
+        </b>
+        <span className="mt-1 truncate text-xs text-text-dim">
+          {track.artist_name}
+        </span>
+      </div>
+      <span className="truncate text-xs text-text-dim max-md:hidden">
+        {track.album_name || 'Single'}
+      </span>
+      <button
+        onClick={() => toggleLike(track.id)}
+        aria-label="Toggle like"
+        className={`p-1 transition-colors hover:text-accent ${isLiked ? 'text-accent' : 'text-icon-idle'}`}
+      >
+        <Heart size={17} fill={isLiked ? 'currentColor' : 'none'} />
+      </button>
+      <span className="text-xs text-text-dim">{formatTime(track.duration)}</span>
+      <button
+        aria-label="More options"
+        className="text-icon-idle-3 transition-colors hover:text-text-faded-2"
+      >
+        <MoreHorizontal size={18} />
+      </button>
+    </div>
   );
 }

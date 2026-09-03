@@ -1,20 +1,18 @@
 import { Play } from 'lucide-react';
 import { artworkUrl } from '../../lib/utils/artworkUrl';
 import { JamendoTrack } from '../../lib/types/jamendo';
+import { usePlayerStore } from '@/stores/playerStore';
+import { useSearchStore } from '@/stores/searchStore';
 
 interface HeroSectionProps {
   visibleTracks: JamendoTrack[];
-  query: string;
-  onPlayFirst: () => void;
-  onRefresh: () => void;
 }
 
-export default function HeroSection({
-  visibleTracks,
-  query,
-  onPlayFirst,
-  onRefresh,
-}: HeroSectionProps) {
+export default function HeroSection({ visibleTracks }: HeroSectionProps) {
+  const refreshCatalog = () => {
+    // Re-run the current search term immediately, bypassing the debounce.
+    useSearchStore.getState().refresh();
+  };
   return (
     <div
       className="grid min-h-77.5 grid-cols-[1fr_330px] gap-0 overflow-hidden rounded-5 px-11 py-9.5 max-md:grid-cols-1 max-md:min-h-0 max-md:p-7 max-[1050px]:grid-cols-[1fr_260px]"
@@ -39,13 +37,16 @@ export default function HeroSection({
         <div className="mt-5.5 flex gap-2.5">
           <button
             className="flex items-center gap-2 rounded-2.25 bg-accent px-4.25 py-2.75 text-[13px] font-bold text-accent-fg"
-            onClick={onPlayFirst}
+            onClick={() =>
+              visibleTracks[0] &&
+              usePlayerStore.getState().playTrack(visibleTracks[0])
+            }
           >
             <Play size={18} fill="currentColor" /> Play now
           </button>
           <button
             className="rounded-2.25 border border-ghost-bd px-4.5 py-2.5 text-[13px] text-text"
-            onClick={onRefresh}
+            onClick={refreshCatalog}
           >
             Refresh catalog
           </button>
