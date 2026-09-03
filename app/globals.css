@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #090a0d;
+  --color-surface: #0d0f13;
+  --color-surface-2: #11141a;
+  --color-surface-3: #121419;
+  --color-surface-4: #15171c;
+  --color-border: #1b1d23;
+  --color-border-2: #1d2026;
+  --color-border-3: #242730;
+  --color-border-4: #242832;
+  --color-divider: #16181d;
+  --color-row-divider: #1b1e24;
+
+  --color-text: #f5f5f5;
+  --color-text-muted: #9da1aa;
+  --color-text-dim: #70757f;
+  --color-text-faint: #7e838d;
+  --color-text-meta: #747984;
+  --color-text-subtle: #656a74;
+  --color-text-faded: #b1b4aa;
+  --color-text-faded-2: #a3a7af;
+  --color-text-eyebrow: #b9c69a;
+  --color-text-search: #777d87;
+
+  --color-accent: #d7ff3f;
+  --color-accent-fg: #10120d;
+
+  --color-danger-bg: #211516;
+  --color-danger-bd: #513535;
+  --color-danger-fg: #ffb6b6;
+
+  --color-nav-active-bg: #1b1e25;
+  --color-history-btn: #15171c;
+  --color-card-bg: #16181d;
+  --color-now-bg: #1d2027;
+  --color-upgrade-from: #171b22;
+  --color-upgrade-to: #111318;
+  --color-row-elevated: #11141a;
+  --color-section-meta: #6e737d;
+  --color-table-divider: #1b1e24;
+
+  --color-topbar-border: #17191f;
+  --color-topbar-bg: rgba(9, 10, 13, 0.9);
+  --color-ghost-bd: #474b42;
+  --color-avatar-bg: #343945;
+  --color-text-profile: #8b9099;
+  --color-icon-idle: #646973;
+  --color-icon-idle-2: #898e97;
+  --color-icon-idle-3: #6d727c;
+  --color-icon-tools: #777c86;
+
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+}
+
+/* Tiny reset for predictable layout. Tailwind preflight already covers most of this,
+   but we need a couple of app-specific defaults. */
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Slim scrollbar for the sidebar. Tailwind doesn't expose scrollbar styling as a
+   utility, so keep the custom rules but scope them to the sidebar. */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2d34 transparent;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #2a2d34;
+  border-radius: 3px;
+}
+
+/* Spinner animation. Tailwind ships animate-spin; keep an alias for the existing
+   `className="spin"` usages in the codebase. */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin {
+  animation: spin 1s linear infinite;
+}
