@@ -28,5 +28,5 @@ export function useLikedTracks() {
     );
   }, []);
 
-  return { liked, toggleLike };
+  return { liked, toggleLike, isMounted };
 }

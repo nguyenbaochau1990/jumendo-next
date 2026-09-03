@@ -9,6 +9,7 @@ interface TrackListProps {
   current: JamendoTrack | null;
   playing: boolean;
   liked: string[];
+  likedMounted: boolean;
   onPlayTrack: (track: JamendoTrack) => void;
   onToggleLike: (id: string) => void;
   onPlay: () => void;
@@ -27,6 +28,7 @@ export default function TrackList({
   current,
   playing,
   liked,
+  likedMounted,
   onPlayTrack,
   onToggleLike,
   onPlay,

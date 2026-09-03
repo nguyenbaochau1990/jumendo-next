@@ -1,6 +1,14 @@
 import { NextResponse } from 'next/server';
 
-const CLIENT_ID = process.env.JAMENDO_CLIENT_ID || '709fa152';
+const CLIENT_ID: string = (() => {
+  const id = process.env.JAMENDO_CLIENT_ID;
+  if (!id) {
+    throw new Error(
+      'JAMENDO_CLIENT_ID is not set. Add it to .env.local before running the app.'
+    );
+  }
+  return id;
+})();
 export async function GET(
   _: Request,
   { params }: { params: Promise<{ id: string }> }

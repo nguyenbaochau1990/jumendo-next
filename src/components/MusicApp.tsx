@@ -38,7 +38,7 @@ export default function MusicApp() {
     setShuffle,
     setRepeat,
   } = useAudioPlayer();
-  const { liked, toggleLike } = useLikedTracks();
+  const { liked, toggleLike, isMounted: likedMounted } = useLikedTracks();
 
   // Initial load: search for empty query to get featured tracks
   useEffect(() => {
@@ -74,7 +74,9 @@ export default function MusicApp() {
     const index = current
       ? tracks.findIndex((t: JamendoTrack) => t.id === current.id)
       : 0;
-    const prevIndex = (index - 1 + tracks.length) % tracks.length;
+    const prevIndex = shuffle
+      ? Math.floor(Math.random() * tracks.length)
+      : (index - 1 + tracks.length) % tracks.length;
     playTrack(tracks[prevIndex]);
   };
 
@@ -131,6 +133,7 @@ export default function MusicApp() {
           current={current}
           playing={playing}
           liked={liked}
+          likedMounted={likedMounted}
           onPlayTrack={playTrack}
           onToggleLike={toggleLike}
           onPlay={togglePlay}
@@ -161,6 +164,7 @@ export default function MusicApp() {
         onSetVolume={setVolumeBound}
         onToggleLike={toggleLike}
         liked={liked}
+        likedMounted={likedMounted}
       />
     </MainLayout>
   );

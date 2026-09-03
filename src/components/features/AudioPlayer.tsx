@@ -32,6 +32,7 @@ interface AudioPlayerProps {
   onSetVolume: (value: number) => void;
   onToggleLike: (id: string) => void;
   liked: string[];
+  likedMounted: boolean;
 }
 
 export default function AudioPlayer({
@@ -52,8 +53,11 @@ export default function AudioPlayer({
   onSetVolume,
   onToggleLike,
   liked,
+  likedMounted,
 }: AudioPlayerProps) {
-  const isLiked = current ? liked.includes(current.id) : false;
+  // Render unliked during SSR + first client paint; flip to the real value
+  // once liked tracks have been rehydrated from localStorage.
+  const isLiked = likedMounted && current ? liked.includes(current.id) : false;
   const title = current?.name || 'Nothing playing';
   const artist = current?.artist_name || 'Search the Jamendo catalog';
   const artwork = artworkUrl(current, 200);
