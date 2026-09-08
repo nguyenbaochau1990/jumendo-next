@@ -57,3 +57,4 @@ export const jamendoService = {
     return data[0];
   },
 };
+

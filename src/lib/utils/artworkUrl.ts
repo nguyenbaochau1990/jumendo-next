@@ -8,3 +8,4 @@ export const artworkUrl = (
   const url = track.album_image || track.image;
   return url ? url.replace(/width=\d+/, `width=${size}`) : '/placeholder.png';
 };
+

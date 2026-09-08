@@ -30,3 +30,4 @@ export async function GET(
     );
   return NextResponse.redirect(loc, 302);
 }
+
