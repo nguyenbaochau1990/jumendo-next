@@ -19,6 +19,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          PR_ACTION: 'improve --extended'
+          PR_ACTION: 'improve'
+          PR_ARGUMENTS: '--extended'
           model: 'gemini/gemini-2.5-flash'
           model_provider: 'google'
