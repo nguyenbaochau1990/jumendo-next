@@ -1,4 +1,4 @@
-name: PR Agent OpenRouter
+name: PR Agent
 on:
   pull_request:
     types: [opened, reopened, ready_for_review, synchronize]
@@ -11,10 +11,12 @@ jobs:
       contents: read
       issues: write
       pull-requests: write
-    name: Run pr agent on every pull request, respond to user comments
+    name: Run pr agent on every pull request
     steps:
       - name: PR Agent action step
         id: pragent
         uses: the-pr-agent/pr-agent@main
         env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONFIG.MODEL: 'gemini/gemini-2.5-flash'
