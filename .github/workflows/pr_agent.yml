@@ -20,4 +20,4 @@ jobs:
           OPENAI_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_BASE: 'https://openrouter.ai'
-          CONFIG.MODEL: 'openrouter/google/gemini-2.5-flash:free'
+          CONFIG.MODEL: 'openrouter/nvidia/nemotron-3.5-super-vl:free'
