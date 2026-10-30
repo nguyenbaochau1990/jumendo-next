@@ -1,3 +1,4 @@
+name: PR Agent OpenRouter
 on:
   pull_request:
     types: [opened, reopened, ready_for_review, synchronize]
@@ -16,5 +17,6 @@ jobs:
         id: pragent
         uses: the-pr-agent/pr-agent@main
         env:
-          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+          OPENAI_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI.API_BASE: 'openrouter.ai'
