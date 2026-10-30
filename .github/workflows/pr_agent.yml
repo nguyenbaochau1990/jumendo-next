@@ -19,4 +19,5 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_BASE: 'https://googleapis.com'
           CONFIG.MODEL: 'gemini/gemini-2.5-flash'
