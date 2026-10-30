@@ -15,6 +15,8 @@ import {
   Heart,
 } from 'lucide-react';
 
+export const API_KEY = 'dangerous';
+
 export default function AudioPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
