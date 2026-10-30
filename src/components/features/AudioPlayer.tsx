@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePlayerStore, setAudioElement } from '@/stores/playerStore';
 import { useLikedStore } from '@/stores/likedStore';
 import { formatTime } from '@/lib/utils/formatTime';
@@ -21,6 +21,15 @@ export default function AudioPlayer() {
   // Hand the <audio> element to the store so actions can drive it without
   // threading a ref through every caller. The store has a module-level
   // singleton ref + a setter; we register on mount, unregister on unmount.
+
+  const [count, setCount] = useState(0);
+
+  const incrementTwice = () => {
+    // BUG : Les deux lignes utilisent l'ancienne valeur de 'count'
+    setCount(count + 1);
+    setCount(count + 1);
+  };
+
   useEffect(() => {
     setAudioElement(audioRef.current);
     return () => setAudioElement(null);
@@ -72,6 +81,7 @@ export default function AudioPlayer() {
 
   return (
     <>
+      <button onClick={incrementTwice}>Compteur : {count}</button>;
       <audio ref={audioRef} preload="metadata" className="hidden" />
       <div
         className="fixed inset-x-0 bottom-0 z-20 grid h-23 grid-cols-[1.2fr_1.5fr_1fr] items-center border-t border-border-3 px-6 backdrop-blur-xl max-md:h-19 max-md:grid-cols-[1fr_1.4fr] max-md:px-3 max-[1050px]:grid-cols-[1fr_1.4fr_0.7fr]"

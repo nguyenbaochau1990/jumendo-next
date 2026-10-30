@@ -1,0 +1,11 @@
+[config]
+model = "gemini/gemini-2.5-flash"
+fallback_to_gpt_35 = false
+
+[pr_commenter]
+# Force le bot à lister même les suggestions mineures au lieu de les ignorer
+min_severity = "INFO" 
+
+[pr_improve_implementation]
+# Active l'extension approfondie pour inspecter chaque ligne de code modifiée
+extended = true 
