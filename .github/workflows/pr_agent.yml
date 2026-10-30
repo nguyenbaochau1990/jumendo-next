@@ -17,6 +17,8 @@ jobs:
         id: pragent
         uses: the-pr-agent/pr-agent@main
         env:
-          GOOGLE_AI_STUDIO__GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CONFIG.MODEL: 'gemini/gemini-2.5-flash'
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PR_AGENT_CONFIG: |
+            [config]
+            model = "gemini/gemini-2.5-flash"
